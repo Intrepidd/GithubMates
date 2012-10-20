@@ -1,5 +1,13 @@
 <div class="row">
   <div class="span12">
+    <h1><%= h params[:login] %> / <%= h params[:repository] %> </h1>
+    <div class="progress progress-striped active" id="progress_bar">
+      <div class="bar" style="width: 5%;"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span12">
     <div id="google_maps">
     </div>
   </div>
@@ -8,7 +16,8 @@
 <script type="text/javascript">
 <!--
   $(document).ready(function() {
-    load_google_maps()
+    load_google_maps();
+    add_users_to_map(<%= params[:login].to_json.html_safe %>, <%= params[:repository].to_json.html_safe %>)
   });
 -->
 </script>

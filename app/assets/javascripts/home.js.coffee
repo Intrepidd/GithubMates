@@ -4,11 +4,25 @@
 
 window.load_google_maps = ->
   mapOptions = {
-      center: new google.maps.LatLng(-34.397, 150.644),
-      zoom: 8,
+      center: new google.maps.LatLng(40, 0),
+      zoom: 2,
       mapTypeId: google.maps.MapTypeId.ROADMAP
   }
 
   map = new google.maps.Map($('#google_maps')[0], mapOptions)
+  window.geocoder = new google.maps.Geocoder()
+
+  addresses = ['16 Willbrook Lawn, Rathfarnam', 'Orsay, France', 'Bordeaux', 'Nantes', 'Strasbourg']
+
+  $.each(addresses, (index, address)->
+    geocoder.geocode({ 'address' : address }, (results, status)->
+      if status == google.maps.GeocoderStatus.OK
+        marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          animation: google.maps.Animation.DROP
+        })
+    )
+  )
 
 

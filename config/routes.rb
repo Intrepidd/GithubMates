@@ -4,4 +4,6 @@ GithubMates::Application.routes.draw do
 
   match '/mates' => 'home#mates'
 
+  match '/api/mates' => 'api#mates'
+
 end

@@ -2,6 +2,13 @@ class GithubMatesFetcher
   attr_accessor :username
   attr_accessor :repository
 
+  def self.github
+    return @github if !@github.nil?
+    @github = Github.new do |c|
+      c.oauth_token = 'f5bc8bdbee9555b1c4dc3190119d250195dbfe48'
+    end
+  end
+
   # Gets informations about a list of users
   #
   # @param [Array] usernames An array of usernames
@@ -9,7 +16,7 @@ class GithubMatesFetcher
   def self.get_users(usernames)
     result = []
     usernames.each do |username|
-        user = Github.users.get(:user => username) rescue nil
+        user = GithubMatesFetcher.github.users.get(:user => username) rescue nil
         if user.present?
           result << user.to_hash
         end
@@ -32,7 +39,7 @@ class GithubMatesFetcher
   # couple does not exist
   def get_committers
     begin
-      commits = Github.repos.commits.all self.username, self.repository
+      commits = GithubMatesFetcher.github.repos.commits.all self.username, self.repository
     rescue
       return nil
     end

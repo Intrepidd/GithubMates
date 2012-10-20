@@ -38,4 +38,4 @@ gem 'jquery-rails'
 # gem 'debugger'
 
 gem "twitter-bootstrap-rails"
-
+gem "github_api"

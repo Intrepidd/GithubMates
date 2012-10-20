@@ -9,20 +9,22 @@ window.load_google_maps = ->
       mapTypeId: google.maps.MapTypeId.ROADMAP
   }
 
-  map = new google.maps.Map($('#google_maps')[0], mapOptions)
+  window.map = new google.maps.Map($('#google_maps')[0], mapOptions)
   window.geocoder = new google.maps.Geocoder()
 
-  addresses = ['16 Willbrook Lawn, Rathfarnam', 'Orsay, France', 'Bordeaux', 'Nantes', 'Strasbourg']
+window.add_users_to_map = (user, repository)->
 
-  $.each(addresses, (index, address)->
-    geocoder.geocode({ 'address' : address }, (results, status)->
-      if status == google.maps.GeocoderStatus.OK
-        marker = new google.maps.Marker({
-          map: map,
-          position: results[0].geometry.location,
-          animation: google.maps.Animation.DROP
-        })
+  $.getJSON("/api/mates?user=#{user}&repository=#{repository}", (data) ->
+    $.each(data, (index, user)->
+      if (user.location != undefined)
+        geocoder.geocode({ 'address' : user.location }, (results, status)->
+          if status == google.maps.GeocoderStatus.OK
+            marker = new google.maps.Marker({
+              map: window.map,
+              position: results[0].geometry.location,
+              animation: google.maps.Animation.DROP
+            })
+        )
     )
   )
-
 

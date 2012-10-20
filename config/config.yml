@@ -1,0 +1,11 @@
+defaults: &defaults
+  maps_api_key: AIzaSyBKRXSHCZZyeMZo0VizdBwQdOrIpfqD51M
+
+development:
+  <<: *defaults
+
+production:
+  <<: *defaults
+
+test:
+  <<: *defaults

@@ -3,6 +3,7 @@
   <head>
     <title>GithubMates</title>
     <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "http://maps.googleapis.com/maps/api/js?key=#{APP_CONFIG['maps_api_key']}&sensor=false" %>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
   </head>

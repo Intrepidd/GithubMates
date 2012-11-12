@@ -2,6 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+//= require handlebars.runtime
+//= require_tree ./templates
+
 window.infos = []
 
 window.close_info_windows = ->
@@ -31,6 +34,8 @@ window.add_users_to_map = (user, repository)->
 
     i = 0
 
+    other_users = []
+
     $.each(data, (index, user)->
       if (user.location != undefined)
         geocoder.geocode({ 'address' : user.location }, (results, status)->
@@ -44,17 +49,21 @@ window.add_users_to_map = (user, repository)->
             google.maps.event.addListener(marker, 'click', ->
               close_info_windows()
               info = new google.maps.InfoWindow({
-                content: user.login
+                content: HandlebarsTemplates['bubble'](user)
               })
               info.open(map, marker)
               window.infos.push info
             )
 
         )
+        # User w/out localisation, add it to the users that will go in the table
+        other_users.push user
       i += 1
       # Update the progress bar
       bar.css({width: "#{i / data.length * 100}%"})
     )
     $('#progress_bar').removeClass('active')
+    if other_users.length > 0
+      $('#other_users').html(HandlebarsTemplates['table']({users : other_users}))
   )
 
